@@ -2,9 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/',(req,res,next)=>{
-    res.status(200).json({
-        message:"get GET data from /order"
-    })
+    res.send("datas")
 })
 
 router.post('/',(req,res,next)=>{

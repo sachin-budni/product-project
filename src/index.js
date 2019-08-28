@@ -2,9 +2,12 @@ const express = require("express");
 const app = express();
 const products = require("./api/router/products"); 
 const orders = require('./api/router/order');
+
 const bodyParser = require('body-parser');
 
 const mongoose = require("mongoose");
+
+app.use(bodyParser.json({limit: '50mb'}))
 
 mongoose.connect("mongodb://localhost/product?poolSize=100",{ useNewUrlParser: true },(error)=>{
     if(error){
@@ -15,7 +18,6 @@ mongoose.connect("mongodb://localhost/product?poolSize=100",{ useNewUrlParser: t
     }
 });
 
-app.use(bodyParser.json())
 
 app.use((req,res,next)=>{
     res.header("Access-Control-Allow-Origin","*");
@@ -26,6 +28,7 @@ app.use((req,res,next)=>{
     }
     next();
 })
+
 
 app.use('/products',products);
 app.use('/orders',orders);
