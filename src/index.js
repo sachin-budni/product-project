@@ -1,11 +1,15 @@
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
+
 const products = require("./api/router/products"); 
 const orders = require('./api/router/order');
-
-const bodyParser = require('body-parser');
-
-const mongoose = require("mongoose");
+const login = require('./api/router/login');
+const register = require('./api/router/register');
+const user = require('./api/router/user');
+const AuthController = require('./api/controller/auth.controller');
+let authController = new AuthController();
 
 app.use(bodyParser.json({limit: '50mb'}))
 
@@ -18,7 +22,6 @@ mongoose.connect("mongodb://localhost/product?poolSize=100",{ useNewUrlParser: t
     }
 });
 
-
 app.use((req,res,next)=>{
     res.header("Access-Control-Allow-Origin","*");
     res.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -29,9 +32,11 @@ app.use((req,res,next)=>{
     next();
 })
 
-
-app.use('/products',products);
+app.use('/login',login);
+app.use('/register',register);
+app.use('/products',authController.auth,products);
 app.use('/orders',orders);
+app.use('/users',authController.auth,user)
 
 app.use((req,res,next)=>{
     const error = new Error("Not Found!");

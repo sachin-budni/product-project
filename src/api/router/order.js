@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const AuthController = require('./../controller/auth.controller');
+let authController = new AuthController();
 
 router.get('/',(req,res,next)=>{
     res.send("datas")
