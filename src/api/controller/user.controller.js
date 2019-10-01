@@ -48,7 +48,8 @@ UserController.prototype.getUser = function(data,callback){
 
 UserController.prototype.currentUser = function(data,callback){
     jwt.verify(data,'productKey',function(err,data){
-        User.findOne({email:data},function(err,res){
+        console.log(data)
+        User.findOne({email:data.email},function(err,res){
             callback(err,res);
         })
     })
